@@ -9,12 +9,14 @@ import com.gerry.gqueue.entity.Order;
 import com.gerry.gqueue.repository.ItemRepository;
 import com.gerry.gqueue.repository.OrderRepository;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class OrderConsumer {
     
     //repositories to retrieve and update items and orders in the database
     private final ItemRepository itemRepository;
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
     
     public OrderConsumer(ItemRepository itemRepository, OrderRepository orderRepository) {
         this.itemRepository = itemRepository;
@@ -22,6 +24,7 @@ public class OrderConsumer {
     }
 
     @KafkaListener(topics = "order-events", groupId = "gqueue-group")
+    @Transactional
     public void consumerOrderEvent(OrderEvent event){
         System.out.println("Received Kafka Event for Order Id: " + event.getOrderId());
 
@@ -36,7 +39,7 @@ public class OrderConsumer {
 
         //retrieve the item associated with this order.
         //throw an exception if the item does not exist.
-        Item i = itemRepository.findById(itemId)
+        Item i = itemRepository.findByIdWithLock(itemId)
                     .orElseThrow(()-> new RuntimeException("Item not found"));
         
         //get item's current staock quantity
