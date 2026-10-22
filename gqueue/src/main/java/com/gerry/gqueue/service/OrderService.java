@@ -8,13 +8,12 @@ import com.gerry.gqueue.entity.Order;
 import com.gerry.gqueue.exception.ResourceNotFoundException;
 import com.gerry.gqueue.kafka.OrderProducer;
 import com.gerry.gqueue.repository.ItemRepository;
-import com.gerry.gqueue.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service 
 @RequiredArgsConstructor 
 public class OrderService {
-    private final OrderRepository orderRepository;
+    
     private final ItemRepository itemRepository;
     private final OrderProducer orderProducer;  //inject producer
 
