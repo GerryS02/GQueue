@@ -5,6 +5,7 @@ import com.gerry.gqueue.dto.OrderEvent;
 import com.gerry.gqueue.dto.OrderRequest;
 import com.gerry.gqueue.entity.Item;
 import com.gerry.gqueue.entity.Order;
+import com.gerry.gqueue.exception.ResourceNotFoundException;
 import com.gerry.gqueue.kafka.OrderProducer;
 import com.gerry.gqueue.repository.ItemRepository;
 import com.gerry.gqueue.repository.OrderRepository;
@@ -20,11 +21,11 @@ public class OrderService {
     public Order createOrder(OrderRequest request){
         //check if the item exists
         Item i = itemRepository.findById(request.getItemId())
-            .orElseThrow(() -> new RuntimeException("Item not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Item not found"));
 
         //check stock availability
         if(i.getStockQuantity() <= 0){
-            throw new RuntimeException("Item " + i.getName() + " is out of stock");
+            throw new IllegalStateException("Item " + i.getName() + " is out of stock");
         }
 
         //save initial order as pending

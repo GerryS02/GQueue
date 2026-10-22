@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.gerry.gqueue.dto.ItemRequest;
 import com.gerry.gqueue.entity.Item;
+import com.gerry.gqueue.exception.ResourceNotFoundException;
 import com.gerry.gqueue.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +29,6 @@ public class ItemService {
 
     public Item getItemById(Long id){
         return itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found"));
     }
 }
