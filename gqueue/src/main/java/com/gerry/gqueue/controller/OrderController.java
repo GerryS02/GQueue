@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor 
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
 
