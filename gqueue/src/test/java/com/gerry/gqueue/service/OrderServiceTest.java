@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import com.gerry.gqueue.dto.OrderRequest;
 import com.gerry.gqueue.entity.Item;
@@ -23,6 +24,7 @@ import com.gerry.gqueue.entity.Order;
 import com.gerry.gqueue.exception.ResourceNotFoundException;
 import com.gerry.gqueue.kafka.OrderProducer;
 import com.gerry.gqueue.repository.ItemRepository;
+import com.gerry.gqueue.repository.OrderRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
@@ -35,6 +37,9 @@ public class OrderServiceTest {
 
     @InjectMocks 
     private OrderService orderService;
+
+    @Mock
+    private OrderRepository orderRepository;
 
     //to check a valid order is created and a Kafka event is published
     @Test 
@@ -49,6 +54,9 @@ public class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest(1L, 10L);
 
+        Order savedOrder = new Order(10L, 1L, "Pending");
+        savedOrder.setId(1L);
+        when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
         //create order
         Order ord = orderService.createOrder(orderRequest);
 
@@ -56,7 +64,7 @@ public class OrderServiceTest {
         assertNotNull(ord);
         assertEquals(10L, ord.getUserId());
         assertEquals(1L, ord.getItemId());
-        assertEquals("Pending", ord.getStatus());
+        assertEquals("PENDING", ord.getStatus());
 
         //comment -> verify that ...
         verify(orderProducer, times(1))
