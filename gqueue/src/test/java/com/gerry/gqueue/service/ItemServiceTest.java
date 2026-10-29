@@ -1,6 +1,5 @@
-package com.gerry.gqueue;
+package com.gerry.gqueue.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -14,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.gerry.gqueue.entity.Item;
 import com.gerry.gqueue.exception.ResourceNotFoundException;
 import com.gerry.gqueue.repository.ItemRepository;
-import com.gerry.gqueue.service.ItemService;
 
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceTest {

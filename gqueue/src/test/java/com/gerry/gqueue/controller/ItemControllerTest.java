@@ -1,9 +1,7 @@
-package com.gerry.gqueue;
+package com.gerry.gqueue.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gerry.gqueue.controller.ItemController;
 import com.gerry.gqueue.dto.ItemRequest;
 import com.gerry.gqueue.entity.Item;
 import com.gerry.gqueue.service.ItemService;
